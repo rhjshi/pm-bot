@@ -18,7 +18,7 @@ client.on("ready", () => {
   if (!commandManager) return console.error("Could not get CommandManager");
 
   commandManager.create(slashCommands.help);
-
+  commandManager.create(slashCommands.create);
 });
 
 client.on("interactionCreate", interaction => {

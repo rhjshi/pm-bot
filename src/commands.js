@@ -6,6 +6,18 @@ const help = {
   description: "I need help!"
 };
 
+const create = {
+  name: "create",
+  description: "Create a ticket/task.",
+  options: [
+    {
+      name: "assignee",
+      description: "User the task is assigned to.",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.USER,
+    },
+  ]
+};
+
 module.exports = {
-  help
+  help, create
 }

@@ -5,6 +5,11 @@ const help = interaction => {
   interaction.reply("hello!");
 };
 
+const create = interaction => {
+  const { options } = interaction;
+  interaction.reply(`assignee: ${options.getUser("assignee")}`);
+};
+
 module.exports = {
-  help
+  help, create
 }
