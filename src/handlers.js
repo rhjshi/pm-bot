@@ -7,7 +7,29 @@ const help = interaction => {
 
 const create = interaction => {
   const { options } = interaction;
-  interaction.reply(`assignee: ${options.getUser("assignee")}`);
+
+  const embed = new DiscordJS.MessageEmbed()
+      .setColor("BLUE")
+      .setTitle("Ticket #1")
+      .setDescription("Successfully created ticket #1")
+      .addFields([
+        {
+          name: "Creator",
+          value: "foo",
+          inline: true
+        },
+        {
+          name: "Assignee",
+          value: options.getUser("assignee")?.toString() || "no one",
+          inline: true
+        }
+      ]);
+    
+
+  interaction.reply({
+    embeds: [embed]
+  });
+  console.log(`assignee: ${options.getUser("assignee")}`)
 };
 
 module.exports = {
