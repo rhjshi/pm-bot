@@ -1,6 +1,9 @@
 // Load all environment variables from .env file
 require('dotenv').config();
 
+const slashCommands = require('./commands');
+const slashCommandHandlers = require('./handlers');
+
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -14,10 +17,7 @@ client.on("ready", () => {
   
   if (!commandManager) return console.error("Could not get CommandManager");
 
-  commandManager.create({
-    name: "help",
-    description: "I need help!"
-  });
+  commandManager.create(slashCommands.help);
 
 });
 
@@ -26,7 +26,7 @@ client.on("interactionCreate", interaction => {
 
   const { commandName, options } = interaction;
 
-  interaction.reply("hello!");
+  slashCommandHandlers[commandName](interaction);
 
 });
 
