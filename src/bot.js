@@ -21,10 +21,13 @@ client.on("ready", () => {
 
 });
 
-const prefix = '!';
-client.on("messageCreate", message => {
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
-  message.reply("Hello World!");
+client.on("interactionCreate", interaction => {
+  if (!interaction.isCommand()) return;
+
+  const { commandName, options } = interaction;
+
+  interaction.reply("hello!");
+
 });
 
 client.login(process.env.BOT_TOKEN);
