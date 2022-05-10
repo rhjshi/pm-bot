@@ -1,5 +1,6 @@
 // File that contains the slash command handlers
 const DiscordJS = require("discord.js");
+const utility = require("./util");
 
 const help = interaction => {
   interaction.reply("hello!");
@@ -15,21 +16,34 @@ const create = interaction => {
       .addFields([
         {
           name: "Creator",
-          value: "foo",
-          inline: true
+          value: interaction.user.toString(),
+          inline: true,
         },
         {
           name: "Assignee",
           value: options.getUser("assignee")?.toString() || "no one",
-          inline: true
-        }
+          inline: true,
+        },
+        {
+          name: "Title",
+          value: options.getString("title"),
+        },
+        {
+          name: "Description",
+          value: options.getString("description"),
+        },
+        {
+          name: "State",
+          value: utility.StateIntToStr[options.getInteger("state") || 0],
+        },
       ]);
     
 
   interaction.reply({
     embeds: [embed]
   });
-  console.log(`assignee: ${options.getUser("assignee")}`)
+  
+  console.log(`create cmd by: ${interaction.user.id}`);
 };
 
 module.exports = {
