@@ -1,18 +1,21 @@
 // File that contains the slash command handlers
 const DiscordJS = require("discord.js");
 const utility = require("./util");
+const TicketController = require("./controllers/ticket");
 
 const help = interaction => {
   interaction.reply("hello!");
 };
 
-const create = interaction => {
+const create = async interaction => {
   const { options } = interaction;
 
+  const ticket = await TicketController.createTicket(interaction.guildId);
+  
   const embed = new DiscordJS.MessageEmbed()
       .setColor("BLUE")
-      .setTitle("Ticket #1")
-      .setDescription("Successfully created ticket #1")
+      .setTitle(`Ticket #${ticket.ticketNum}`)
+      .setDescription(`Successfully created ticket #${ticket.ticketNum}`)
       .addFields([
         {
           name: "Creator",

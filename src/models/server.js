@@ -26,7 +26,7 @@ const serverSchema = new mongoose.Schema({
  * Increments the ticketCounter on the server and 
  * returns the new resulting count 
  */
-serverSchema.methods.incrementTicketNumber = async function() {
+serverSchema.methods.incrementTicketCounter = async function() {
   this.ticketCounter += 1;
   await this.save();
 
