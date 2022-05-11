@@ -1,10 +1,11 @@
 // Load all environment variables from .env file
 require('dotenv').config();
+const mongoose = require("mongoose");
+const { Client, Intents } = require('discord.js');
 
 const slashCommands = require('./commands');
 const slashCommandHandlers = require('./handlers');
 
-const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const testGuildID = "879055304392851486";
@@ -28,6 +29,18 @@ client.on("interactionCreate", interaction => {
 
   slashCommandHandlers[commandName](interaction);
 
+  // interaction.options.getString
+  // interaction.user.toString
+  // interaction.guildId
+
 });
 
 client.login(process.env.BOT_TOKEN);
+
+mongoose.connect(process.env.MONGO_SRV, {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+  // useCreateIndex: true
+})
+.then( () => console.log("MongoDB connection successfully established.") )
+.catch( err => console.log("MongoDB connection failed:", err) );
