@@ -44,7 +44,7 @@ const create = async interaction => {
         },
         {
           name: "State",
-          value: utility.StateIntToStr[ticket.state],
+          value: utility.TicketStateToStr[ticket.state],
         },
       ]);
     

@@ -21,7 +21,7 @@ const createTicket = async ({
     assigneeId,
     title,
     description,
-    state: state || util.StateStrToInt.todo
+    state: state || util.TicketStates.todo
   });
   
   await ticket.save();

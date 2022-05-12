@@ -1,13 +1,13 @@
-const StateStrToInt = {
+const TicketStates = {
   todo: 0,
   inProgress: 1,
   completed: 2,
 };
 
-const StateIntToStr = [
-  "todo",
-  "in progress",
-  "completed",
+const TicketStateToStr = [
+  "Todo",
+  "In progress",
+  "Completed",
 ];
 
 /**
@@ -16,12 +16,12 @@ const StateIntToStr = [
  */
 const mention = discId => {
   if (!discId) return "";
-  
+
   return `<@${discId}>`;
 };
 
 module.exports = {
-  StateIntToStr,
-  StateStrToInt,
+  TicketStates,
+  TicketStateToStr,
   mention,
 }
