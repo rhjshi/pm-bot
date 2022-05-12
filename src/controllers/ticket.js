@@ -29,6 +29,14 @@ const createTicket = async ({
   return ticket;
 };
 
+
+const getTicket = (guildId, number) => 
+  Ticket.findOne({
+      guildId, 
+      number
+  }).exec();
+
+
 module.exports = {
-  createTicket,
+  createTicket, getTicket
 }

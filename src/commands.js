@@ -49,6 +49,19 @@ const create = {
   ]
 };
 
+const get = {
+  name: "get",
+  description: "Get details about specific ticket.",
+  options: [
+    {
+      name: "number",
+      description: "The generated ticket number.",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
+      required: true,
+    },
+  ],
+};
+
 module.exports = {
-  help, create
+  help, create, get
 }

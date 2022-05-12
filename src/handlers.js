@@ -57,6 +57,55 @@ const create = async interaction => {
   console.log(`create cmd by: ${interaction.user.id}`);
 };
 
+
+const get = async interaction => {
+  const { guildId, options } = interaction;
+  const num = options.getInteger("number");
+
+  console.log(`get cmd for: ${guildId}#${num}`);
+
+  const ticket = await TicketController.getTicket(guildId, num);
+
+  if (!ticket) {
+    interaction.reply(`Could not get ticket #${num}`);
+    return;
+  }
+
+  const embed = new DiscordJS.MessageEmbed()
+      .setColor("BLUE")
+      .setTitle(`Ticket #${ticket.number}`)
+      .setDescription(`Successfully retrieved ticket #${ticket.number}`)
+      .addFields([
+        {
+          name: "Creator",
+          value: utility.mention(ticket.creatorId),
+          inline: true,
+        },
+        {
+          name: "Assignee",
+          value: utility.mention(ticket.assigneeId) || "None",
+          inline: true,
+        },
+        {
+          name: "State",
+          value: utility.TicketStateToStr[ticket.state],
+          inline: true,
+        },
+        {
+          name: "Title",
+          value: ticket.title,
+        },
+        {
+          name: "Description",
+          value: ticket.description,
+        },
+      ]);
+
+  interaction.reply({ embeds: [embed] });
+};
+
+
+
 module.exports = {
-  help, create
+  help, create, get
 }
