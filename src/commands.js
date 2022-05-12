@@ -55,13 +55,72 @@ const get = {
   options: [
     {
       name: "number",
-      description: "The generated ticket number.",
+      description: "The ticket number.",
       type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
       required: true,
     },
   ],
 };
 
+const update = {
+  name: "update",
+  description: "Update a ticket.",
+  options: [
+    {
+      name: "assignee",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+      description: "Update the assignee.",
+      options: [
+        {
+          name: "number",
+          description: "The ticket number.",
+          type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
+          required: true,
+        },
+        {
+          name: "assignee",
+          description: "User the task is assigned to.",
+          type: DiscordJS.Constants.ApplicationCommandOptionTypes.USER,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: "state",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+      description: "Update the state.",
+      options: [
+        {
+          name: "number",
+          description: "The ticket number.",
+          type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
+          required: true,
+        },
+        {
+          name: "state",
+          description: "State of the task.",
+          type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
+          required: true,
+          choices: [
+            {
+              name: "todo",
+              value: 0
+            },
+            {
+              name: "in progress",
+              value: 1
+            },
+            {
+              name: "completed",
+              value: 2
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 module.exports = {
-  help, create, get
+  help, create, get, update
 }

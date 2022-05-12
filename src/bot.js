@@ -21,13 +21,15 @@ client.on("ready", () => {
   commandManager.create(slashCommands.help);
   commandManager.create(slashCommands.create);
   commandManager.create(slashCommands.get);
+  commandManager.create(slashCommands.update);
 });
 
 client.on("interactionCreate", interaction => {
   if (!interaction.isCommand()) return;
 
   const { commandName, options } = interaction;
-
+  console.log(`Cmd "${commandName}" ran.`);
+  
   slashCommandHandlers[commandName](interaction);
 
   // interaction.options.getString

@@ -104,8 +104,10 @@ const get = async interaction => {
   interaction.reply({ embeds: [embed] });
 };
 
+const update = async interaction => {
 
+};
 
 module.exports = {
-  help, create, get
+  help, create, get, update
 }
