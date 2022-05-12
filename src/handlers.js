@@ -35,16 +35,17 @@ const create = async interaction => {
           inline: true,
         },
         {
+          name: "State",
+          value: utility.TicketStateToStr[ticket.state],
+          inline: true,
+        },
+        {
           name: "Title",
           value: ticket.title,
         },
         {
           name: "Description",
           value: ticket.description,
-        },
-        {
-          name: "State",
-          value: utility.TicketStateToStr[ticket.state],
         },
       ]);
     
