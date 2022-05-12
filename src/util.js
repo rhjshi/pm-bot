@@ -1,7 +1,7 @@
 const StateStrToInt = {
-  "todo": 0,
-  "in progress": 1,
-  "completed": 2,
+  todo: 0,
+  inProgress: 1,
+  completed: 2,
 };
 
 const StateIntToStr = [

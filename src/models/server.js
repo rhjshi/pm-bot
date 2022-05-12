@@ -34,6 +34,6 @@ serverSchema.methods.incrementTicketCounter = async function() {
 }
 
 /*
- * Creates model for collection "Servers"  
+ * Creates model for collection "servers"
  */
 module.exports = mongoose.model("Server", serverSchema);
