@@ -35,7 +35,7 @@ client.on("interactionCreate", interaction => {
   // interaction.options.getString
   // interaction.user.toString
   // interaction.guildId
-
+  // options.getSubcommand
 });
 
 client.login(process.env.BOT_TOKEN);

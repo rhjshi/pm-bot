@@ -105,7 +105,37 @@ const get = async interaction => {
 };
 
 const update = async interaction => {
+  const { guildId, options } = interaction;
+  const num = options.getInteger("number");
 
+  const ticket = await TicketController.getTicket(guildId, num);
+
+  console.log(
+    options.getSubcommand(),
+    num,
+    options.getUser("assignee"),
+    options.getInteger("state")
+  )
+
+  if (!ticket) {
+    interaction.reply(`Could not update ticket #${num}`);
+    return;
+  }
+
+  const updates = {};
+  switch (options.getSubcommand()) {
+    case "assignee":
+      updates.assigneeId = options.getUser("assignee").id;
+      break;
+    case "state":
+      updates.state = options.getInteger("state");
+      break;
+    default:
+      break;
+  }
+
+  await TicketController.updateTicket(guildId, num, updates);
+  interaction.reply(`Ticket #${num} successfully updated.`);
 };
 
 module.exports = {
