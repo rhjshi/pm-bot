@@ -10,34 +10,41 @@ const help = interaction => {
 const create = async interaction => {
   const { options } = interaction;
 
-  const ticket = await TicketController.createTicket(interaction.guildId);
+  const ticket = await TicketController.createTicket({
+    guildId: interaction.guildId,
+    creatorId: interaction.user.id,
+    assigneeId: options.getUser("assignee")?.id,
+    title: options.getString("title"),
+    description: options.getString("description"),
+    state: options.getInteger("state"),
+  });
   
   const embed = new DiscordJS.MessageEmbed()
       .setColor("BLUE")
-      .setTitle(`Ticket #${ticket.ticketNum}`)
-      .setDescription(`Successfully created ticket #${ticket.ticketNum}`)
+      .setTitle(`Ticket #${ticket.number}`)
+      .setDescription(`Successfully created ticket #${ticket.number}`)
       .addFields([
         {
           name: "Creator",
-          value: interaction.user.toString(),
+          value: utility.mention(ticket.creatorId),
           inline: true,
         },
         {
           name: "Assignee",
-          value: options.getUser("assignee")?.toString() || "no one",
+          value: utility.mention(ticket.assigneeId) || "None",
           inline: true,
         },
         {
           name: "Title",
-          value: options.getString("title"),
+          value: ticket.title,
         },
         {
           name: "Description",
-          value: options.getString("description"),
+          value: ticket.description,
         },
         {
           name: "State",
-          value: utility.StateIntToStr[options.getInteger("state") || 0],
+          value: utility.StateIntToStr[ticket.state],
         },
       ]);
     
