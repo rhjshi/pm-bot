@@ -1,5 +1,4 @@
 // File that contains the slash command handlers
-const DiscordJS = require("discord.js");
 const utility = require("./util");
 const TicketController = require("./controllers/ticket");
 
@@ -19,39 +18,8 @@ const create = async interaction => {
     state: options.getInteger("state"),
   });
   
-  const embed = new DiscordJS.MessageEmbed()
-      .setColor("BLUE")
-      .setTitle(`Ticket #${ticket.number}`)
-      .setDescription(`Successfully created ticket #${ticket.number}`)
-      .addFields([
-        {
-          name: "Creator",
-          value: utility.mention(ticket.creatorId),
-          inline: true,
-        },
-        {
-          name: "Assignee",
-          value: utility.mention(ticket.assigneeId) || "None",
-          inline: true,
-        },
-        {
-          name: "State",
-          value: utility.TicketStateToStr[ticket.state],
-          inline: true,
-        },
-        {
-          name: "Title",
-          value: ticket.title,
-        },
-        {
-          name: "Description",
-          value: ticket.description,
-        },
-      ]);
-    
-
   interaction.reply({
-    embeds: [embed]
+    embeds: [utility.createMessageEmbed(ticket, "BLUE", `Successfully created ticket #${ticket.number}`)]
   });
   
   console.log(`create cmd by: ${interaction.user.id}`);
@@ -60,55 +28,49 @@ const create = async interaction => {
 
 const get = async interaction => {
   const { guildId, options } = interaction;
-  const num = options.getInteger("number");
+  let tickets;
+  let embeds;
+  console.log(`get cmd for: ${guildId}`);
 
-  console.log(`get cmd for: ${guildId}#${num}`);
-
-  const ticket = await TicketController.getTicket(guildId, num);
-
-  if (!ticket) {
-    interaction.reply(`Could not get ticket #${num}`);
-    return;
+  switch (options.getSubcommand()) {
+    case "all":
+      tickets = await TicketController.getTickets(guildId);
+      if (!tickets.length || !tickets) {
+        interaction.reply(`Could not get all tickets`);
+        return;
+      }
+      embeds = tickets.map(ticket => utility.createMessageEmbed(ticket, "BLUE", `Successfully retrieved ticket #${ticket.number}`));
+      break;
+    case "number":
+      const num = options.getInteger("number")
+      const ticket = await TicketController.getTicketByNumber(guildId, num);
+      if (!ticket) {
+        interaction.reply(`Could not get ticket #${num}`);
+        return;
+      }
+      embeds = [(utility.createMessageEmbed(ticket, "BLUE", `Successfully retrieved ticket #${ticket.number}`))];
+      break;
+    case "assignee":
+      const assigneeId = options.getUser("assignee").id
+      tickets = await TicketController.getTicketsByAssigneeId(guildId, assigneeId);
+      if (!tickets.length || !tickets) {
+        interaction.reply(`Could not get tickets for assignee`);
+        return;
+      }
+      embeds = tickets.map(ticket => utility.createMessageEmbed(ticket, "BLUE", `Successfully retrieved ticket #${ticket.number}`));
+      break;
+    default:
+      break;
   }
 
-  const embed = new DiscordJS.MessageEmbed()
-      .setColor("BLUE")
-      .setTitle(`Ticket #${ticket.number}`)
-      .setDescription(`Successfully retrieved ticket #${ticket.number}`)
-      .addFields([
-        {
-          name: "Creator",
-          value: utility.mention(ticket.creatorId),
-          inline: true,
-        },
-        {
-          name: "Assignee",
-          value: utility.mention(ticket.assigneeId) || "None",
-          inline: true,
-        },
-        {
-          name: "State",
-          value: utility.TicketStateToStr[ticket.state],
-          inline: true,
-        },
-        {
-          name: "Title",
-          value: ticket.title,
-        },
-        {
-          name: "Description",
-          value: ticket.description,
-        },
-      ]);
-
-  interaction.reply({ embeds: [embed] });
+  interaction.reply({ embeds });
 };
 
 const update = async interaction => {
   const { guildId, options } = interaction;
   const num = options.getInteger("number");
 
-  const ticket = await TicketController.getTicket(guildId, num);
+  const ticket = await TicketController.getTicketByNumber(guildId, num);
 
   console.log(
     options.getSubcommand(),
@@ -151,37 +113,7 @@ const remove = async interaction => {
     return;
   }
 
-  const embed = new DiscordJS.MessageEmbed()
-      .setColor("BLUE")
-      .setTitle(`Ticket #${ticket.number}`)
-      .setDescription(`Successfully deleted ticket #${ticket.number}`)
-      .addFields([
-        {
-          name: "Creator",
-          value: utility.mention(ticket.creatorId),
-          inline: true,
-        },
-        {
-          name: "Assignee",
-          value: utility.mention(ticket.assigneeId) || "None",
-          inline: true,
-        },
-        {
-          name: "State",
-          value: utility.TicketStateToStr[ticket.state],
-          inline: true,
-        },
-        {
-          name: "Title",
-          value: ticket.title,
-        },
-        {
-          name: "Description",
-          value: ticket.description,
-        },
-      ]);
-
-  interaction.reply({ embeds: [embed] });
+  interaction.reply({ embeds: [utility.createMessageEmbed(ticket, "RED", `Successfully deleted ticket #${ticket.number}`)] });
 
 }
 
