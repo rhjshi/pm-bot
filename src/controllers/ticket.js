@@ -42,7 +42,12 @@ const updateTicket = (guildId, number, updates) =>
     number
   }, updates).exec();
 
+const deleteTicket = (guildId, number) => 
+  Ticket.findOneAndDelete({
+    guildId, 
+    number
+  }).exec();
 
 module.exports = {
-  createTicket, getTicket, updateTicket
+  createTicket, getTicket, updateTicket, deleteTicket
 }

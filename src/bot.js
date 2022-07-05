@@ -22,6 +22,7 @@ client.on("ready", () => {
   commandManager.create(slashCommands.create);
   commandManager.create(slashCommands.get);
   commandManager.create(slashCommands.update);
+  commandManager.create(slashCommands.remove);
 });
 
 client.on("interactionCreate", interaction => {

@@ -121,6 +121,19 @@ const update = {
   ],
 };
 
+const remove = {
+  name: "remove",
+  description: "Delete a specific ticket.",
+  options: [
+    {
+      name: "number",
+      description: "The ticket number.",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
+      required: true,
+    },
+  ],
+};
+
 module.exports = {
-  help, create, get, update
+  help, create, get, update, remove
 }

@@ -138,6 +138,53 @@ const update = async interaction => {
   interaction.reply(`Ticket #${num} successfully updated.`);
 };
 
+const remove = async interaction => {
+  const { guildId, options } = interaction;
+  const num = options.getInteger("number");
+
+  console.log(`delete cmd for: ${guildId}#${num}`);
+
+  const ticket = await TicketController.deleteTicket(guildId, num);
+
+  if (!ticket) {
+    interaction.reply(`Could not delete ticket #${num}`);
+    return;
+  }
+
+  const embed = new DiscordJS.MessageEmbed()
+      .setColor("BLUE")
+      .setTitle(`Ticket #${ticket.number}`)
+      .setDescription(`Successfully deleted ticket #${ticket.number}`)
+      .addFields([
+        {
+          name: "Creator",
+          value: utility.mention(ticket.creatorId),
+          inline: true,
+        },
+        {
+          name: "Assignee",
+          value: utility.mention(ticket.assigneeId) || "None",
+          inline: true,
+        },
+        {
+          name: "State",
+          value: utility.TicketStateToStr[ticket.state],
+          inline: true,
+        },
+        {
+          name: "Title",
+          value: ticket.title,
+        },
+        {
+          name: "Description",
+          value: ticket.description,
+        },
+      ]);
+
+  interaction.reply({ embeds: [embed] });
+
+}
+
 module.exports = {
-  help, create, get, update
+  help, create, get, update, remove
 }
