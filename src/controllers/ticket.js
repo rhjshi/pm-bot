@@ -29,11 +29,21 @@ const createTicket = async ({
   return ticket;
 };
 
+const getTickets = (guildId) =>
+  Ticket.find({
+      guildId
+  }).exec();
 
-const getTicket = (guildId, number) =>
+const getTicketByNumber = (guildId, number) =>
   Ticket.findOne({
       guildId, 
       number
+  }).exec();
+
+const getTicketsByAssigneeId = (guildId, assigneeId) =>
+  Ticket.find({
+      guildId, 
+      assigneeId
   }).exec();
 
 const updateTicket = (guildId, number, updates) =>
@@ -49,5 +59,5 @@ const deleteTicket = (guildId, number) =>
   }).exec();
 
 module.exports = {
-  createTicket, getTicket, updateTicket, deleteTicket
+  createTicket, getTickets, getTicketByNumber, getTicketsByAssigneeId, updateTicket, deleteTicket
 }

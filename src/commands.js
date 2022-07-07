@@ -51,13 +51,38 @@ const create = {
 
 const get = {
   name: "get",
-  description: "Get details about specific ticket.",
+  description: "Get details about tickets.",
   options: [
     {
+      name: "all",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+      description: "Get all tickets.",
+    },
+    {
       name: "number",
-      description: "The ticket number.",
-      type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
-      required: true,
+      description: "Get ticket by ticket number",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: "number",
+          description: "The ticket number.",
+          type: DiscordJS.Constants.ApplicationCommandOptionTypes.INTEGER,
+          required: true,
+        },
+      ],
+    },
+    {
+      name: "assignee",
+      description: "Get tickets by assignee",
+      type: DiscordJS.Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: "assignee",
+          description: "The user name for the assigned tickets.",
+          type: DiscordJS.Constants.ApplicationCommandOptionTypes.USER,
+          required: true,
+        },
+      ],
     },
   ],
 };
